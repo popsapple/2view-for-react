@@ -1,11 +1,13 @@
 import React from 'react';
-import style from './AudioPlayer.module.scss';
-import Draggable from 'react-draggable'; // The default
+import styles from './AudioPlayer.scss?inline';
+import { Draggable } from './Draggable';
+import { useImportStyle } from '@src/util/style';
 export function AudioPlayer(props: {url: string, timeupdate: (v: number) => void}) {
     const audio = React.useRef<HTMLAudioElement | null>(null);
     const bar = React.useRef<HTMLDivElement | null>(null);
     const [canDrag, setCanDrag] = React.useState<boolean>(false);
     const [isPlaing, setPlaing] = React.useState<boolean>(false);
+    useImportStyle(styles, 'audioplayer');
     React.useEffect(() => {
         setCanDrag(true);
     }, [bar.current])
@@ -25,33 +27,27 @@ export function AudioPlayer(props: {url: string, timeupdate: (v: number) => void
             audio.current?.pause();
         }
     }, [isPlaing])
-    return <div className={style.Audio}>
+    return <div>
         <audio ref={(e) => audio.current = e} src={props.url} controls={false} />
         <button onClick={() => audio.current?.pause()}></button>
         <button onClick={() => audio.current?.play()}></button>
-        <div className={'progress'} ref={(e) => bar.current = e}>
-            
+        <div className="progress" ref={(e) => bar.current = e}>
+            <Draggable 
+                axis='x'
+                dragStart={(ev: React.PointerEvent<HTMLButtonElement>) => {
+                    if(!canDrag) false;
+                    console.log(ev)
+                }}
+                dragMove={(ev: React.PointerEvent<HTMLButtonElement>) => {
+                    if(!canDrag) false;
+                    console.log(ev)
+                }}
+                dragStop={(ev: React.PointerEvent<HTMLButtonElement>) => {
+                    console.log(ev);
+                    setPlaing(true);
+                }}
+                parentElement={bar.current}
+            />
         </div>
     </div>
 }
-/**
- * {canDrag && bar.current ? <Draggable
-                axis='x'
-                bounds='parent'
-                defaultPosition={{x:0, y: 10}}
-                offsetParent={bar.current}
-                position={isPlaing ? {x: 0, y: 10} : undefined}
-                onStart={() => {
-                    setPlaing(false);
-                }}
-                onDrag={(e, data) => {
-                    if(!bar.current) return;
-                    const rate = (data.x / bar.current?.offsetWidth);
-                    if(!audio.current) return;
-                    audio.current.currentTime = audio.current.duration * rate;
-                }}
-                onStop={() => {
-                    setPlaing(true);
-                }}
-            /> : ''}
- */

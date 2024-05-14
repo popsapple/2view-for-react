@@ -5,9 +5,8 @@ import mainCss from './index.css?inline';
 import SocketFactory from '../util/socket.ts';
 import { RecoilRoot } from 'recoil';
 
-
+let container: HTMLDivElement;
 class WebComponentMain extends HTMLElement {
-  private _container: HTMLDivElement;
   private _socket: SocketFactory | null = null;
   public $user_list: {id: string}[] = [];
   get $socket(): SocketFactory | null {
@@ -23,25 +22,28 @@ class WebComponentMain extends HTMLElement {
   constructor() {
     super();
     const root = this.attachShadow({mode: 'open'});
-    this._container = document.createElement('div');
-    this._container.id = "main";
+    container = document.createElement('div');
+    container.id = "main";
     const style = document.createElement('style');
     style.innerHTML = mainCss;
-    root.appendChild(this._container);
+    root.appendChild(container);
     root.appendChild(style);
   }
   connectedCallback() {
+    alert('?')
     const uid = this.getAttribute('uid');
     if(!uid) return;
     this.$socket = new SocketFactory({name: uid});
-    ReactDOM.createRoot(this._container).render(
+    ReactDOM.createRoot(container as HTMLElement).render(
       <React.StrictMode>
         <RecoilRoot>
-          <App socket={this.$socket} />
+          <App socket={this.$socket} container={container} />
         </RecoilRoot>
       </React.StrictMode>,
     );
     this.$socket.sendPad({type: 'toPad', msg: {text: 'somthing'}});
   }
 }
-window.customElements.define('main-teacher-component', WebComponentMain);
+setTimeout(() => {
+  if(!window.customElements.get('main-teacher-component')) window.customElements.define('main-teacher-component', WebComponentMain);
+},0)

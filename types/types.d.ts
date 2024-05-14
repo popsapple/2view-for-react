@@ -1,0 +1,1 @@
+declare const cfg_tag: string;

@@ -1,6 +1,5 @@
-import styles from "./Loading.module.scss"
 export function Loading() {
-    return <div className={`loadingbox ${styles.Loading}`}>
+    return <div className={`loadingbox`}>
        <div className="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> 
     </div>
 }

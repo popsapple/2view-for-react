@@ -8,6 +8,7 @@ import Button from '@src/component/button';
 import HeadLine from '@src/component/headerline';
 import ContentsBox from '@src/component/contentsbox';
 import { SentenceList } from '@src/common/SentenceList';
+import { UserContext } from '@src/component/CommonContext';
 
 export enum PlayStep {
   Script = 'Script',
@@ -16,7 +17,8 @@ export enum PlayStep {
   Detail = 'Detail'
 }
 
-function App(props: {socket: SocketFactory | null}) {
+
+function App(props: {socket: SocketFactory | null, container: HTMLDivElement}) {
   const [users, setUsers] = useRecoilState<{id: string}[]>(atomUserList);
   const [step, setStep] = useState<PlayStep>(PlayStep.Script);
 
@@ -46,44 +48,47 @@ function App(props: {socket: SocketFactory | null}) {
     }
     slots[key[0]] = item;
   });
+
   /*
   
   예시로, 문장들을 넣은 다음에,
   문장들 선택후 언스크램블 활동 이걸로 만들자
   */
   return (
-    <main>
-      <HeadLine
-        className="navi"
-        children={
-          <Button 
-            size="xs" 
-            slots={slots} 
-            slot_key={step} 
-            click={() => {
-              switch (step) {
-                case PlayStep.Script:
-                  setStep(PlayStep.Sentence);
-                  break;
-                case PlayStep.Sentence:
-                  setStep(PlayStep.PlayList);
-                  break;
-                case PlayStep.PlayList:
-                  setStep(PlayStep.Detail);
-                  break;
-                case PlayStep.Detail:
-                  setStep(PlayStep.PlayList);
-                  break;
-              }
-            }} 
-          />
-        }
-        title="문장 맞춰보기"
-      />
-      <ContentsBox className="script" grid={"1fr"}>
-        <SentenceList />
-      </ContentsBox>
+    <UserContext.Provider value={props.container}>
+      <main>
+        <HeadLine
+          className="navi"
+          children={
+            <Button 
+              size="xs" 
+              slots={slots} 
+              slot_key={step} 
+              click={() => {
+                switch (step) {
+                  case PlayStep.Script:
+                    setStep(PlayStep.Sentence);
+                    break;
+                  case PlayStep.Sentence:
+                    setStep(PlayStep.PlayList);
+                    break;
+                  case PlayStep.PlayList:
+                    setStep(PlayStep.Detail);
+                    break;
+                  case PlayStep.Detail:
+                    setStep(PlayStep.PlayList);
+                    break;
+                }
+              }} 
+            />
+          }
+          title="문장 맞춰보기"
+        />
+        <ContentsBox className="script" grid={"1fr"}>
+          <SentenceList />
+        </ContentsBox>
     </main>
+      </UserContext.Provider>
   );
 }
 

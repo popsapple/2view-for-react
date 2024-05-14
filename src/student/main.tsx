@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import mainCss from './index.css?inline';
 import SocketFactory from '../util/socket.ts';
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 import { RecoilRoot } from 'recoil';
+import { UserContext } from '@src/component/CommonContext';
 
 const userid = uuidv4();
 
@@ -37,7 +38,9 @@ class WebComponentMain extends HTMLElement {
     ReactDOM.createRoot(this._container).render(
       <React.StrictMode>
         <RecoilRoot>
-          <App socket={this.$socket} />
+          <UserContext.Provider value={this._container}>
+            <App socket={this.$socket} />
+          </UserContext.Provider>
         </RecoilRoot>
       </React.StrictMode>,
     );
@@ -45,7 +48,8 @@ class WebComponentMain extends HTMLElement {
     if(!uid) return;
     this.$socket = new SocketFactory({name: uid});
     this.$socket.sendTeacher({type:'toTeacher', msg: {subtype: 'attendence', id: this._userid}});
-    alert('???? '+this._userid)
   }
 }
-window.customElements.define('main-student-component', WebComponentMain);
+setTimeout(() => {
+  if(!window.customElements.get('main-student-component')) window.customElements.define('main-student-component', WebComponentMain);
+},0)

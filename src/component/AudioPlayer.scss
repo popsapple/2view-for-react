@@ -1,0 +1,10 @@
+@import '../var';
+:scope {
+    .progress {
+        position: relative;
+        width: 200px;
+        height: 10px;
+        display: block;
+        background: rgb(66, 97, 43);
+    }
+}
