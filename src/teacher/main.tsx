@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import mainCss from './index.css?inline';
+import mainCss from './app.scss?inline';
+import containerCss from './index.css?inline';
 import SocketFactory from '../util/socket.ts';
 import { RecoilRoot } from 'recoil';
 
@@ -28,9 +29,13 @@ class WebComponentMain extends HTMLElement {
     style.innerHTML = mainCss;
     root.appendChild(container);
     root.appendChild(style);
+
+    // 웹 컴포넌트 바깥.
+    const out = document.createElement('style');
+    out.innerHTML = containerCss;
+    document.head.appendChild(out);
   }
   connectedCallback() {
-    alert('?')
     const uid = this.getAttribute('uid');
     if(!uid) return;
     this.$socket = new SocketFactory({name: uid});

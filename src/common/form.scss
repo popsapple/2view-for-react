@@ -1,0 +1,22 @@
+.ck {
+    width: 2rem;
+    height: 2rem;
+    background: white;
+    border: 1px solid #e0e0e0;
+    text-indent: -999px;
+    @apply rounded-lg;
+    &:hover,
+    &.active {
+        position: relative;
+        &::after {
+            content: " ";
+            display: block;
+            width: 16px;
+            height: 16px;
+            @apply absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md bg-indigo-500;
+        }
+    }
+    &:hover{
+        @apply bg-indigo-200;
+    }
+}

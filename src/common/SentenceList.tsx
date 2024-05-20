@@ -19,26 +19,26 @@ function printList(script: sentenceType[], currentTime: number, selectedScripts:
             }
         >
             <Button
-            size="md"
-            click={() => {
-                const temp = [...selectedScripts];
-                const fidx = temp.findIndex((i) => i.idx === srt.idx);
-                if (fidx !== -1) {
-                temp.splice(fidx, 1);
-                } else {
-                temp.push(srt);
+                size="md"
+                click={() => {
+                    const temp = [...selectedScripts];
+                    const fidx = temp.findIndex((i) => i.idx === srt.idx);
+                    if (fidx !== -1) {
+                    temp.splice(fidx, 1);
+                    } else {
+                    temp.push(srt);
+                    }
+                    setSelectedScripts(temp);
+                }}
+                slots={{'active' : <>'선택됨'</>, 'default' : <>'해제됨'</> }}
+                slot_key={
+                    selectedScripts.findIndex((i) => i.idx === srt.idx) !== -1 ? "active" : "default"
                 }
-                setSelectedScripts(temp);
-            }}
-            slots={{'active' : <>'선택됨'</>, 'default' : <>'해제됨'</> }}
-            slot_key={
-                selectedScripts.findIndex((i) => i.idx === srt.idx) !== -1 ? "active" : "default"
-            }
-            classNm={
-                selectedScripts.findIndex((i) => i.idx === srt.idx) !== -1  ? "ck active" : "ck default"
-            }
+                classNm={
+                    selectedScripts.findIndex((i) => i.idx === srt.idx) !== -1  ? "ck active" : "ck default"
+                }
             ></Button>
-            <span>{srt.sentence}</span>
+            <span className="ml-[0.5rem]">{srt.sentence}</span>
         </div>
         );
     })

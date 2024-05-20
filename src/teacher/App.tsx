@@ -1,5 +1,5 @@
 import '../../mockup/engtemp';
-import './App.css'
+import './app.scss'
 import { atomUserList } from '@src/store/users';
 import type SocketFactory from '@src/util/socket';
 import React, { useState } from 'react';
@@ -56,9 +56,9 @@ function App(props: {socket: SocketFactory | null, container: HTMLDivElement}) {
   */
   return (
     <UserContext.Provider value={props.container}>
-      <main>
+      <main className="w-[96%] m-auto v-line bg-white rounded-md shadow-md p-[1rem]">
         <HeadLine
-          className="navi"
+          className="navi w-[100%] text-left text-lg"
           children={
             <Button 
               size="xs" 
@@ -80,6 +80,7 @@ function App(props: {socket: SocketFactory | null, container: HTMLDivElement}) {
                     break;
                 }
               }} 
+              classNm="bg-indigo-500 text-white text-xs rounded-md px-[0.5rem] py-[0.1rem] mr-[1rem] h-[2rem]"
             />
           }
           title="문장 맞춰보기"
