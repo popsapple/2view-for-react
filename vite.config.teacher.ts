@@ -21,11 +21,10 @@ export  function myPlugin() {
     }
   }
 }
-
 // https://vitejs.dev/config/
 export default defineConfig({
   root: PATH.resolve(process.cwd(), './src'),
-  plugins: [react(), tsconfigPaths(), myPlugin()],
+  plugins: [react(), tsconfigPaths()],
   server: {
     host: '0.0.0.0',
     port: 9001,
